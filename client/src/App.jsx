@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import RouterPage from '../routerPage'
+import RouterPage from './routerPage'
 
 function App() {
 

@@ -1,28 +1,62 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, {useState} from 'react'
 
 export default function SignUp() {
-    const navigate = useNavigate();
+    const [userDetails,setUserDetails]=useState({
+        fullName:'',
+        email:'',
+        password:'',
+})
+
+  // handle submit of user credential
+  const handleInputChanges=(e)=>{
+    setUserDetails(prev=>({...prev,[e.target.name]:e.target.value}))
+  }
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    const {fullName,email,password} = userDetails;
+    console.log(fullName,email,password);
+    setUserDetails({fullName:'',email:'',password:'',})
+  }
     
   return (
-    <div className='flex flex-col items-center h-screen justify-center'>
-    <h1 className='text-3xl font-semibold mb-3'>Be a part of Atlius community</h1>
-    <div className='border bg-slate-100 w-1/3 flex flex-col gap-2 justify-start p-5 rounded-lg shadow-sm'>
-        <h1 className='text-center font-xl'>Create an account</h1>
-        <form className='flex flex-col gap-2'>
-            <label htmlFor='username' className='flex flex-col'>Username
-                <input type='text' name='username' className='border rounded-md'/>
-            </label>
-            <label htmlFor='email' className='flex flex-col'>Email
-                <input type='email' name='email' className='border rounded-md'/>
-            </label>
-            <label htmlFor='password' className='flex flex-col'>Password
-                <input type='password' name='password' className='border rounded-md'/>
-            </label>
-            <button type='submit' name='login' className='border bg-black text-white w-min px-3 py-1 rounded-md'>SignUp</button>
-        </form>
-        <button onClick={()=>navigate('/login')}>Already have an account</button>
-    </div>
+<div className='w-[80%]'>
+    <section className="flex-col-center gap-2 py-5 shadow-md rounded-md my-5">
+    <h1 className="text-2xl font-bold">Sign Up</h1>
+    <p className="font-semibold">Create your account</p>
+    <form action="POST" onSubmit={handleSubmit} className="flex flex-col items-center gap-2 justify-center">
+        <label htmlFor="text">Full Name</label>
+        <input 
+        type="text" 
+        name="fullName" 
+        placeholder="eg:Ram" 
+        required
+        value={userDetails.fullName}
+        min={3}
+        onChange={handleInputChanges}
+        />
+        <label htmlFor="email">Email address</label>
+        <input 
+        type="email" 
+        name="email" 
+        placeholder="abc@email.com" 
+        required
+        value={userDetails.email}
+        onChange={handleInputChanges}
+        />
+        <label htmlFor="password">Password</label>
+        <input 
+        type="password" 
+        name="password" 
+        placeholder="*******" 
+        required
+        min={4}
+        value={userDetails.password}
+        onChange={handleInputChanges}
+        />
+        <button type='submit' className="btn">Register</button>
+    </form>
+    </section>
 </div>
   )
 }

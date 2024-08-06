@@ -13,14 +13,17 @@ const reducer = (state, action) => {
         tasks: [...state.tasks, action.payload]
       };
     
-    case "UPDATE_TASK":
-      // eslint-disable-next-line no-case-declarations
-      const getTask = state.tasks.filter(task=>task.id === action.payload.id);
-      getTask.status = action.payload.status;
-
+      case "UPDATE_TASK":
+        // eslint-disable-next-line no-case-declarations
+        const updatedTask = state.tasks.map((task)=>{
+          if(task.id === action.payload.id){
+            return {...task, status: action.payload.newStatus}
+          }
+          return task;
+        });
       return {
         ...state,
-        tasks: [...state.tasks, getTask]
+        tasks: updatedTask
       };
 
     case "DELETE_TASK":
@@ -36,7 +39,7 @@ const reducer = (state, action) => {
 
 export default function Task() {
   const [state,dispatch] =useReducer(reducer, initialState);
-
+  console.log('STATE',state);
 
     const updateStatus = (id, newStatus) => {
       dispatch({ type: "UPDATE_TASK", payload:{id, newStatus} });
@@ -49,7 +52,7 @@ export default function Task() {
 
     return (
         <div className="mt-10 p-4 rounded-lg shadow-lg">
-          <NavBar addTask={(title, description, status) => dispatch({type: "ADD_TASK", payload: {title, description, status}})}/>
+          <NavBar addTask={(id, title, description, status) => dispatch({type: "ADD_TASK", payload: {id, title, description, status}})}/>
             <table className="min-w-full">
                 <thead>
                     <tr>
@@ -78,7 +81,7 @@ export default function Task() {
                             <td className="py-2 px-4 border-b text-center border-gray-600">
                                 <button
                                     onClick={() => deleteTask(task.id)}
-                                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
+                                    className="bg-red-600 text-navyblue px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
                                 >
                                     Delete
                                 </button>
